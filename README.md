@@ -4,9 +4,9 @@ A real-time noise suppression plugin for voice based on [Xiph's RNNoise](https:/
 
 ## About
 
-The plugin is meant to suppress a wide range of noise origins ([from original paper](https://arxiv.org/pdf/1709.08243.pdf)): computer fans, office, crowd, airplane, car, train, construction. 
+The plugin is meant to suppress a wide range of noise origins ([from original paper](https://arxiv.org/pdf/1709.08243.pdf)): computer fans, office, crowd, airplane, car, train, construction.
 
-From my tests mild background noise is always suppressed, loud sounds, like clicking of mechanical keyboard, are suppressed while there is no voice however they are only reduced in volume when voice is present. 
+From my tests mild background noise is always suppressed, loud sounds, like clicking of mechanical keyboard, are suppressed while there is no voice however they are only reduced in volume when voice is present.
 
 The plugin is made to work with 1 channel and/or 2 channels (ladspa plugin), 16 bit, 48000 Hz audio input. Other sample rates may work, or not...
 
@@ -18,7 +18,7 @@ To check or change mic settings go to "Recording devices" -> "Recording" -> "Pro
 
 To enable the plugin in Equalizer APO select "Plugins" -> "VST Plugin" and specify the plugin dll.
 
-See [detailed guide](https://medium.com/@bssankaran/free-and-open-source-software-noise-cancelling-for-working-from-home-edb1b4e9764e) provided by  [@bssankaran](https://github.com/bssankaran).
+See [detailed guide](https://medium.com/@bssankaran/free-and-open-source-software-noise-cancelling-for-working-from-home-edb1b4e9764e) provided by [@bssankaran](https://github.com/bssankaran).
 
 ### Linux
 
@@ -31,11 +31,13 @@ The idea is:
 - Create loopback from microphone (`source`) to input sink of plugin (`sink`) with 1 channel.
 
 For example, to create a new mono device with noise-reduced audio from your microphone, first, find your mic name using e.g.:
+
 ```sh
 pactl list sources short
 ```
 
 Then, create the new device using:
+
 ```sh
 pacmd load-module module-null-sink sink_name=mic_denoised_out rate=48000
 pacmd load-module module-ladspa-sink sink_name=mic_raw_in sink_master=mic_denoised_out label=noise_suppressor_mono plugin=/path/to/librnnoise_ladspa.so control=50
@@ -68,6 +70,7 @@ pacmd load-module module-remap-source source_name=denoised master=mic_denoised_o
 ```
 
 Additional notes:
+
 - You can get `librnnoise_ladspa.so` either by downloading latest release or by compiling it yourself.
 - You may still need to set correct input for application, this can be done in audio mixer panel (if you have one) in 'Recording' tab where you should set 'Monitor of Null Output' as source.
 
@@ -112,13 +115,15 @@ For MacOS steps are the same as for Linux.
 If you did not download and place VST sdk files - VST plugin won't be built.
 
 Compiling for x64:
+
 ```
 cmake -Bbuild-x64 -H. -DCMAKE_BUILD_TYPE=Release
 cd build-x64
-make 
+make
 ```
 
 Compiling for x32:
+
 ```
 cmake -D CMAKE_CXX_FLAGS=-m32 -D CMAKE_C_FLAGS=-m32 -Bbuild-x32 -H. -DCMAKE_BUILD_TYPE=Release
 cd build-x32
@@ -126,6 +131,7 @@ make
 ```
 
 Cross-compiling for Windows x64:
+
 ```
 cmake -Bbuild-mingw64 -H.  -DCMAKE_TOOLCHAIN_FILE=toolchains/toolchain-mingw64.cmake -DCMAKE_BUILD_TYPE=Release
 cd build-mingw64
@@ -150,3 +156,5 @@ cmake -DBUILD_VST_PLUGIN=OFF
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details.
+
+test 0.91
