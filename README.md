@@ -15,9 +15,9 @@
 
 A real-time noise suppression plugin for voice based on [Xiph's RNNoise](https://github.com/xiph/rnnoise). [More info about the base library](https://people.xiph.org/~jm/demo/rnnoise/).
 
-The plugin is meant to suppress a wide range of noise origins ([from original paper](https://arxiv.org/pdf/1709.08243.pdf)): computer fans, office, crowd, airplane, car, train, construction. 
+The plugin is meant to suppress a wide range of noise origins ([from original paper](https://arxiv.org/pdf/1709.08243.pdf)): computer fans, office, crowd, airplane, car, train, construction.
 
-From my tests mild background noise is always suppressed, loud sounds, like clicking of mechanical keyboard, are suppressed while there is no voice however they are only reduced in volume when voice is present. 
+From my tests mild background noise is always suppressed, loud sounds, like clicking of mechanical keyboard, are suppressed while there is no voice however they are only reduced in volume when voice is present.
 
 The plugin works with one or more channels, 16 bit, 48000 Hz audio input.
 
@@ -49,9 +49,9 @@ To check or change mic settings go to "Recording devices" -> "Recording" -> "Pro
 
 To enable the plugin in Equalizer APO select "Plugins" -> "VST Plugin" and specify the plugin dll.
 
-See [detailed guide](https://medium.com/@bssankaran/free-and-open-source-software-noise-cancelling-for-working-from-home-edb1b4e9764e) provided by  [@bssankaran](https://github.com/bssankaran).
+See [detailed guide](https://medium.com/@bssankaran/free-and-open-source-software-noise-cancelling-for-working-from-home-edb1b4e9764e) provided by [@bssankaran](https://github.com/bssankaran).
 
-- v1.0: Now there is a GUI, so it became easy to change parameters. 
+- v1.0: Now there is a GUI, so it became easy to change parameters.
 
 ### Linux
 
@@ -66,6 +66,7 @@ For PipeWire >= `0.3.45` you should:
 - Create config directory: `~/.config/pipewire/pipewire.conf.d/`
 - Create config for plugin: `~/.config/pipewire/pipewire.conf.d/99-input-denoising.conf`
 - Paste configuration:
+
 ```
 context.modules = [
 {   name = libpipewire-module-filter-chain
@@ -111,9 +112,11 @@ context.modules = [
 For more information consult PipeWire documentation on [Filter-Chains](https://docs.pipewire.org/page_module_filter_chain.html)
 
 Troubleshooting:
+
 - TODO, how to change sample rate for mic.
 
 Alternative solutions for PipeWire/PulseAudio configuration which also use RNNoise:
+
 - [pulseeffects](https://github.com/wwmm/pulseeffects) - a general solution for audio effects GUI for PipeWire. Easy to set up and use. Fewer settings for denoising.
 - [NoiseTorch](https://github.com/noisetorch/NoiseTorch) - easy to set up, works with PulseAudio and Pipewire. Fewer settings for denoising.
 
@@ -131,11 +134,13 @@ The idea is:
 - Create loopback from microphone (`source`) to input sink of plugin (`sink`) with 1 channel.
 
 For example, to create a new mono device with noise-reduced audio from your microphone, first, find your mic name using e.g.:
+
 ```sh
 pactl list sources short
 ```
 
 Then, create the new device using:
+
 ```sh
 pacmd load-module module-null-sink sink_name=mic_denoised_out rate=48000
 pacmd load-module module-ladspa-sink sink_name=mic_raw_in sink_master=mic_denoised_out label=noise_suppressor_mono plugin=/path/to/librnnoise_ladspa.so control=50,20,0,0,0
@@ -163,6 +168,7 @@ If you have a stereo input use these options instead:
 - `channels=2`
 
 If you have problems with audio crackling or high / periodically increasing latency, adding `latency_msec=1` to the loopback might help:
+
 ```
 load-module module-loopback source=your_mic_name sink=mic_raw_in channels=1 source_dont_move=true sink_dont_move=true latency_msec=1
 ```
@@ -190,6 +196,7 @@ TODO, contributions are welcomed!
 ## Status
 
 The plugin is tested with:
+
 - Equalizer APO v1.2 x64 (open source system-wide equalizer for Windows)
 - PipeWire on Arch Linux
 - Carla (on Linux)
@@ -206,18 +213,21 @@ Improvements are welcomed! Though if you want to contribute anything sizeable - 
 ### Compiling
 
 Compiling for x64:
+
 ```sh
 cmake -Bbuild-x64 -H. -GNinja -DCMAKE_BUILD_TYPE=Release
 ninja -C build-x64
 ```
 
 Compiling for x32:
+
 ```sh
 cmake -D CMAKE_CXX_FLAGS=-m32 -D CMAKE_C_FLAGS=-m32 -Bbuild-x32 -H. -GNinja -DCMAKE_BUILD_TYPE=Release
 ninja -C build-x32
 ```
 
 Cross-compiling for Windows x64:
+
 ```sh
 cmake -Bbuild-mingw64 -H. -GNinja -DCMAKE_TOOLCHAIN_FILE=toolchains/toolchain-mingw64.cmake -DCMAKE_BUILD_TYPE=Release
 ninja -C build-mingw64
@@ -246,6 +256,9 @@ cmake -DBUILD_VST_PLUGIN=OFF -DBUILD_LV2_PLUGIN=OFF
 This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details.
 
 Used libraries:
+
 - [JUCE](https://github.com/juce-framework/JUCE) is used under GPLv3 license
 - [FST](https://git.iem.at/zmoelnig/FST/) - GPLv3
 - [catch2](https://github.com/catchorg/Catch2) - BSL-1.0
+
+TEST FOR CMAKE
